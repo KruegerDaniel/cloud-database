@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ECS" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.tum.i13.ecs.StartECS" />
+    <module name="cdbms4" />
+    <option name="PROGRAM_PARAMETERS" value="-p 5153" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

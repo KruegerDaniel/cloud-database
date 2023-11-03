@@ -1,0 +1,101 @@
+\documentclass[sigconf]{acmart}
+
+\settopmatter{printacmref=false} % Removes citation information below abstract
+\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\pagestyle{plain} % removes running headers
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    \normalfont B\kern-0.5em{\scshape i\kern-0.25em b}\kern-0.8em\TeX}}}
+
+
+\setcopyright{none}
+\begin{document}
+
+\title{Cloud Databases - Final Project Report}
+
+\author{Sebastian Oßner}
+\affiliation{%
+  \institution{Technical University Munich}
+  \city{Munich}
+  \country{Germany}}
+\email{ossner@in.tum.de}
+
+\author{Calin Buzetelu}
+\affiliation{%
+  \institution{Technical University Munich}
+  \city{Munich}
+  \country{Germany}}
+\email{TODO}
+
+\author{Daniel Krüger}
+\affiliation{%
+  \institution{Technical University Munich}
+  \city{Munich}
+  \country{Germany}}
+\email{TODO}
+
+\begin{abstract}
+  In 2012, Amazon Web Services debuted DynamoDB, a NoSQL storage service that aimed to improve the flexibility and scalability of the traditional relational databases. In the following, we describe our attempt at constructing a storage service with similar goals at heart. This effort was guided along by our instructors during the semester with the workload being broken up into multiple milestones. The most important architectural characteristics as well as metrics of the final application will be laid out in the course of this report.
+\end{abstract}
+
+\keywords{Cloud Computing, Cloud Databases, NoSQL}
+
+\maketitle
+\section{Introduction}
+Today, AWS advertises DynamoDB first and foremost for its high scalability and robustness.
+% TODO cite
+These are the key features that we were tasked to implement in our storage service during the semester. In our case, scalability means not only should our service handle increased load on single servers, but also algorithmic scalability in the sense that the service improves quality when the number of storage nodes is scaled up.
+
+To achieve this, it is imperative to use a distributed system of storage nodes that balance the loads clients place upon the service. These were only some of the specifications given to us during the semester; As raw scalability is not enough to qualify a storage system as realistically feasible, redundancy and replication mechanisms must be in place as well. The technical implementations of these requirements will be further elaborated in \ref{architecture-overview}.
+
+Other than the aforementioned metrics of scalability and robustness, achieving the highest possible performance is paramount to provide the best service to clients. In \ref{performance-analysis} we provide a comprehensive overview of the performance of our service.
+\begin{enumerate}
+  \item The relevance of scalable, distributed storage system
+  \item General description
+  \item Description of milestones and achieved goal
+\end{enumerate}
+\section{Architecture Overview}\label{architecture-overview}
+This section will give a brief overview of the architecture of the main components of our system, these components have mainly been introduced in the later milestones of the course and have proven to show some interesting characteristics. Going forward it is assumed the reader understands the principles behind consistent hashing exemplified by systems such as Apache's "Cassandra".
+% TODO cite
+\subsection{External Configuration Service}
+Since the storage nodes in our system are inherently independant from each other, an external service is needed to keep track of them. This external configuration service (ECS) is the coordinator between all the nodes in the system, continously monitoring servers, keeping track of failures, and relaying information between them.
+
+\subsubsection{Addition of Storage Nodes}
+When a new node starts, it is given the address of the ECS as a bootstrap server and before it can start accepting client connections, it has to register itself at the ECS. This is done by establishing a TCP-connection with the bootstrap and sending the register command.
+%TODO reference this in message table
+If no reply is received, the node will shut down automatically.
+
+If a server successfully registers, the ECS will notify all other servers of the addition by sending a metadata update consisting of the new hashring.
+%TODO reference this in message table
+Then, to initiate the key transfer, the new node's successor is set to read-only and receives the address and port of the new server so it can send the keys which it is no longer responsible for to the new node.
+
+\subsubsection{Continous Monitoring and Removal of Nodes}
+In order to ensure that the hashring is always up to date, the ECS monitors the servers via pings. If a server takes too long to respond, or no connection is established, the server is considered lost as well as all keys this node stored.
+
+\subsection{Hashring Balancing and Replication}
+Milestones three and four focused on load balancing and data replication respectively.
+
+Maintaining a "hashring" with a constant number of storage nodes would be quite simple, once 
+\begin{enumerate}
+  \item Class diagrams (+description)
+  \item Deployment diagrams (+description)
+  \item Comm. diagram (hashring balancing, justification for heartbeat)
+\end{enumerate}
+
+\section{Performance Analysis}\label{performance-analysis}
+\section{Conclusion}
+\section{Appendix - Messaging Protocol}
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+   & Command & Type & Parameters & Response \\ \hline
+  \hline
+   &  &  &  &  \\ \hline
+   &  &  &  &  \\ \hline
+   &  &  &  &  \\ \hline
+  \end{tabular}
+
+
+\end{document}
+\endinput

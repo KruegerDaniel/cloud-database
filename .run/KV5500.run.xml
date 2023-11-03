@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="KV5500" type="Application" factoryName="Application" folderName="KVs">
+    <option name="MAIN_CLASS_NAME" value="de.tum.i13.KVserver.nio.StartKVServer" />
+    <module name="cdbms4" />
+    <option name="PROGRAM_PARAMETERS" value="-b 127.0.0.1:5153 -p 5500 -d 5500 -c 1" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

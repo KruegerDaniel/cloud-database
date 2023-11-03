@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="KVCompound" type="CompoundRunConfigurationType">
+    <toRun name="KV5300" type="Application" />
+    <toRun name="KV5000" type="Application" />
+    <toRun name="KV5200" type="Application" />
+    <toRun name="KV5400" type="Application" />
+    <toRun name="KV5600" type="Application" />
+    <toRun name="KV5100" type="Application" />
+    <toRun name="KV5500" type="Application" />
+    <method v="2" />
+  </configuration>
+</component>
